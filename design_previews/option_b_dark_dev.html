@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<title>案B - Dark Developer Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { font-family: "JetBrains Mono", "Geist Mono", "SF Mono", Consolas, monospace; }
+  .tabular { font-variant-numeric: tabular-nums; }
+  .bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 180px; }
+  .bar { width: 100%; background: linear-gradient(180deg, #22d3ee 0%, #0891b2 100%); box-shadow: 0 0 12px rgba(34,211,238,0.3); }
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(34,211,238,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34,211,238,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+</style>
+</head>
+<body class="bg-slate-950 text-slate-100 antialiased grid-bg min-h-screen">
+  <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-20">
+    <div class="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="text-cyan-400">▊</span>
+        <span class="text-lg font-bold tracking-tight">claudecoach</span>
+        <span class="text-xs text-slate-500 ml-1">v1.0</span>
+      </div>
+      <div class="flex items-center gap-3 text-xs">
+        <div class="flex items-center gap-0.5 rounded border border-slate-800 bg-slate-900 p-0.5">
+          <button class="px-2.5 h-7 rounded-sm bg-cyan-500 text-slate-950 font-bold">pro</button>
+          <button class="px-2.5 h-7 text-slate-400 hover:text-cyan-400">max_5x</button>
+          <button class="px-2.5 h-7 text-slate-400 hover:text-cyan-400">max_20x</button>
+          <button class="px-2.5 h-7 text-slate-400 hover:text-cyan-400">api</button>
+        </div>
+        <div class="flex items-center gap-0.5 rounded border border-slate-800 bg-slate-900 p-0.5">
+          <button class="px-3 h-7 rounded-sm bg-cyan-500 text-slate-950 font-bold">weekly</button>
+          <button class="px-3 h-7 text-slate-400 hover:text-cyan-400">monthly</button>
+        </div>
+        <button class="h-8 px-3 rounded border border-slate-800 bg-slate-900 text-slate-400 hover:text-cyan-400">[EN]</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-6xl px-6 py-8 space-y-6">
+    <div class="grid grid-cols-4 gap-4">
+      <div class="border border-slate-800 bg-slate-900/50 p-5">
+        <p class="text-[10px] text-slate-500 uppercase tracking-widest">// total_tokens</p>
+        <p class="mt-3 text-3xl font-bold tabular text-cyan-400">2,340,000</p>
+        <p class="mt-1 text-[10px] text-slate-500">sessions=12</p>
+      </div>
+      <div class="border border-slate-800 bg-slate-900/50 p-5">
+        <p class="text-[10px] text-slate-500 uppercase tracking-widest">// api_cost</p>
+        <p class="mt-3 text-3xl font-bold tabular text-cyan-400">$7.02</p>
+        <p class="mt-1 text-[10px] text-slate-500">msgs=84</p>
+      </div>
+      <div class="border border-cyan-900 bg-cyan-950/30 p-5">
+        <p class="text-[10px] text-cyan-500 uppercase tracking-widest">// roi</p>
+        <p class="mt-3 text-3xl font-bold tabular text-cyan-300">4.20x ✓</p>
+        <p class="mt-1 text-[10px] text-cyan-500">profitable=true</p>
+      </div>
+      <div class="border border-slate-800 bg-slate-900/50 p-5">
+        <p class="text-[10px] text-slate-500 uppercase tracking-widest">// savings_est</p>
+        <p class="mt-3 text-3xl font-bold tabular text-cyan-400">$2.80</p>
+      </div>
+    </div>
+
+    <div class="border border-slate-800 bg-slate-900/50 p-6">
+      <p class="text-xs text-slate-500 mb-4">// token_usage :: weekly</p>
+      <div class="bar-chart">
+        <div class="bar" style="height:30%"></div>
+        <div class="bar" style="height:55%"></div>
+        <div class="bar" style="height:80%"></div>
+        <div class="bar" style="height:45%"></div>
+        <div class="bar" style="height:92%"></div>
+        <div class="bar" style="height:60%"></div>
+        <div class="bar" style="height:75%"></div>
+      </div>
+      <div class="flex justify-between mt-2 text-[10px] text-slate-500 tabular">
+        <span>04-04</span><span>04-05</span><span>04-06</span><span>04-07</span><span>04-08</span><span>04-09</span><span>04-10</span>
+      </div>
+    </div>
+
+    <div class="border border-slate-800 bg-slate-900/50 p-6">
+      <p class="text-xs text-slate-500 mb-4">// project_cost</p>
+      <div class="space-y-2 text-sm">
+        <div class="flex items-center gap-4">
+          <div class="w-56 text-slate-300 truncate">my_portfolio-finance-rag</div>
+          <div class="flex-1 h-1.5 bg-slate-800 overflow-hidden">
+            <div class="h-full bg-cyan-400" style="width:100%"></div>
+          </div>
+          <div class="w-16 text-right tabular text-cyan-400">$3.21</div>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="w-56 text-slate-300 truncate">my_portfolio-claudecoach-web</div>
+          <div class="flex-1 h-1.5 bg-slate-800 overflow-hidden">
+            <div class="h-full bg-cyan-400" style="width:65%"></div>
+          </div>
+          <div class="w-16 text-right tabular text-cyan-400">$2.10</div>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="w-56 text-slate-300 truncate">prototyping-BCN-flight</div>
+          <div class="flex-1 h-1.5 bg-slate-800 overflow-hidden">
+            <div class="h-full bg-cyan-400" style="width:38%"></div>
+          </div>
+          <div class="w-16 text-right tabular text-cyan-400">$1.22</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border border-slate-800 bg-slate-900/50 p-6">
+      <p class="text-xs text-slate-500 mb-4">// message_list</p>
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-[10px] text-slate-500 uppercase border-b border-slate-800">
+            <th class="text-left py-2">time ↓</th>
+            <th class="text-left py-2">preview</th>
+            <th class="text-right py-2">tokens</th>
+            <th class="text-right py-2">cost</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-800/60">
+          <tr><td class="py-2.5 text-xs text-slate-500 tabular">04-10 14:23</td><td class="py-2.5 text-slate-300 truncate max-w-[320px]">このCSVを読み込んで、前月比の...</td><td class="py-2.5 text-right tabular text-cyan-400">12,430</td><td class="py-2.5 text-right tabular text-cyan-400">$0.0823</td></tr>
+          <tr><td class="py-2.5 text-xs text-slate-500 tabular">04-10 13:55</td><td class="py-2.5 text-slate-300 truncate max-w-[320px]">ダッシュボードにフィルタ機能を...</td><td class="py-2.5 text-right tabular text-cyan-400">8,120</td><td class="py-2.5 text-right tabular text-cyan-400">$0.0421</td></tr>
+          <tr><td class="py-2.5 text-xs text-slate-500 tabular">04-10 11:02</td><td class="py-2.5 text-slate-300 truncate max-w-[320px]">エラーが出ています</td><td class="py-2.5 text-right tabular text-cyan-400">420</td><td class="py-2.5 text-right tabular text-cyan-400">$0.0018</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+  <footer class="mx-auto max-w-6xl px-6 py-8 text-[10px] text-slate-600 text-center">
+    // option_b - dark dev / cyan accent / monospace
+  </footer>
+</body>
+</html>

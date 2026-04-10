@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<title>案C - Friendly (Notion / Cal.com)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { font-family: "Nunito", -apple-system, sans-serif; }
+  .tabular { font-variant-numeric: tabular-nums; }
+  .bar-chart { display: flex; align-items: flex-end; gap: 10px; height: 180px; }
+  .bar { width: 100%; border-radius: 10px 10px 0 0; background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%); }
+</style>
+</head>
+<body class="antialiased" style="background: linear-gradient(180deg, #fffbeb 0%, #ffffff 400px);">
+  <header class="bg-white/70 backdrop-blur border-b border-amber-100 sticky top-0 z-20">
+    <div class="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="h-9 w-9 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-bold shadow-lg shadow-amber-200">🎯</div>
+        <span class="text-xl font-bold tracking-tight text-slate-800">ClaudeCoach</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-1 rounded-full border border-amber-100 bg-white p-1 shadow-sm">
+          <button class="px-3 h-8 text-xs font-bold rounded-full bg-amber-400 text-white shadow-sm">Pro</button>
+          <button class="px-3 h-8 text-xs font-semibold text-slate-500 hover:text-slate-800">Max 5x</button>
+          <button class="px-3 h-8 text-xs font-semibold text-slate-500 hover:text-slate-800">Max 20x</button>
+          <button class="px-3 h-8 text-xs font-semibold text-slate-500 hover:text-slate-800">API</button>
+        </div>
+        <div class="flex items-center gap-1 rounded-full border border-amber-100 bg-white p-1 shadow-sm">
+          <button class="px-4 h-8 text-xs font-bold rounded-full bg-amber-400 text-white shadow-sm">週次</button>
+          <button class="px-4 h-8 text-xs font-semibold text-slate-500">月次</button>
+        </div>
+        <button class="h-9 px-4 rounded-full border border-amber-100 bg-white text-xs font-bold hover:bg-amber-50 shadow-sm">🌐 English</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-6xl px-6 py-10 space-y-6">
+    <div class="grid grid-cols-4 gap-5">
+      <div class="rounded-2xl bg-white border border-amber-100 p-6 shadow-sm hover:shadow-lg transition-all">
+        <div class="h-10 w-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-3 text-xl">📊</div>
+        <p class="text-xs font-semibold text-slate-500">合計使用量</p>
+        <p class="mt-1 text-3xl font-extrabold tabular text-slate-800">234<span class="text-lg text-slate-400">万</span></p>
+        <p class="mt-1 text-xs text-slate-400">12 セッション</p>
+      </div>
+      <div class="rounded-2xl bg-white border border-amber-100 p-6 shadow-sm hover:shadow-lg transition-all">
+        <div class="h-10 w-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center mb-3 text-xl">💰</div>
+        <p class="text-xs font-semibold text-slate-500">かかった費用</p>
+        <p class="mt-1 text-3xl font-extrabold tabular text-slate-800">$7.02</p>
+        <p class="mt-1 text-xs text-slate-400">84 メッセージ</p>
+      </div>
+      <div class="rounded-2xl bg-gradient-to-br from-amber-100 to-orange-50 border border-amber-200 p-6 shadow-sm hover:shadow-lg transition-all">
+        <div class="h-10 w-10 rounded-xl bg-amber-200 text-amber-700 flex items-center justify-center mb-3 text-xl">🎉</div>
+        <p class="text-xs font-semibold text-amber-700">元取れてる？</p>
+        <p class="mt-1 text-3xl font-extrabold tabular text-amber-700">4.2倍 ✅</p>
+        <p class="mt-1 text-xs text-amber-600">めっちゃ元取れてます！</p>
+      </div>
+      <div class="rounded-2xl bg-white border border-amber-100 p-6 shadow-sm hover:shadow-lg transition-all">
+        <div class="h-10 w-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-3 text-xl">💡</div>
+        <p class="text-xs font-semibold text-slate-500">節約できる額</p>
+        <p class="mt-1 text-3xl font-extrabold tabular text-slate-800">$2.80</p>
+      </div>
+    </div>
+
+    <div class="rounded-2xl bg-white border border-amber-100 p-6 shadow-sm">
+      <div class="flex items-center gap-2 mb-5">
+        <span class="text-xl">📈</span>
+        <h2 class="text-base font-bold text-slate-800">トークン使用量</h2>
+      </div>
+      <div class="bar-chart">
+        <div class="bar" style="height:30%"></div>
+        <div class="bar" style="height:55%"></div>
+        <div class="bar" style="height:80%"></div>
+        <div class="bar" style="height:45%"></div>
+        <div class="bar" style="height:92%"></div>
+        <div class="bar" style="height:60%"></div>
+        <div class="bar" style="height:75%"></div>
+      </div>
+      <div class="flex justify-between mt-3 text-xs text-slate-400 tabular font-semibold">
+        <span>4/4</span><span>4/5</span><span>4/6</span><span>4/7</span><span>4/8</span><span>4/9</span><span>4/10</span>
+      </div>
+    </div>
+
+    <div class="rounded-2xl bg-white border border-amber-100 p-6 shadow-sm">
+      <div class="flex items-center gap-2 mb-5">
+        <span class="text-xl">📁</span>
+        <h2 class="text-base font-bold text-slate-800">作業別コスト</h2>
+      </div>
+      <div class="space-y-4">
+        <div class="flex items-center gap-4">
+          <div class="w-56 text-sm font-semibold text-slate-700 truncate">my_portfolio-finance-rag</div>
+          <div class="flex-1 h-3 rounded-full bg-amber-50 overflow-hidden">
+            <div class="h-full rounded-full bg-gradient-to-r from-amber-400 to-orange-500" style="width:100%"></div>
+          </div>
+          <div class="w-16 text-right text-sm font-bold tabular text-slate-800">$3.21</div>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="w-56 text-sm font-semibold text-slate-700 truncate">my_portfolio-claudecoach-web</div>
+          <div class="flex-1 h-3 rounded-full bg-amber-50 overflow-hidden">
+            <div class="h-full rounded-full bg-gradient-to-r from-amber-400 to-orange-500" style="width:65%"></div>
+          </div>
+          <div class="w-16 text-right text-sm font-bold tabular text-slate-800">$2.10</div>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="w-56 text-sm font-semibold text-slate-700 truncate">prototyping-BCN-flight</div>
+          <div class="flex-1 h-3 rounded-full bg-amber-50 overflow-hidden">
+            <div class="h-full rounded-full bg-gradient-to-r from-amber-400 to-orange-500" style="width:38%"></div>
+          </div>
+          <div class="w-16 text-right text-sm font-bold tabular text-slate-800">$1.22</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rounded-2xl bg-white border border-amber-100 p-6 shadow-sm">
+      <div class="flex items-center gap-2 mb-5">
+        <span class="text-xl">💬</span>
+        <h2 class="text-base font-bold text-slate-800">メッセージ別使用量</h2>
+      </div>
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-xs text-slate-400 font-semibold border-b border-amber-100">
+            <th class="text-left py-3">時刻 ↓</th>
+            <th class="text-left py-3">内容</th>
+            <th class="text-right py-3">トークン</th>
+            <th class="text-right py-3">コスト</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-amber-50">
+          <tr><td class="py-3 text-xs text-slate-400 tabular font-semibold">4/10 14:23</td><td class="py-3 text-slate-700 truncate max-w-[320px]">このCSVを読み込んで、前月比の...</td><td class="py-3 text-right tabular font-bold text-slate-800">12,430</td><td class="py-3 text-right tabular font-bold text-slate-800">$0.0823</td></tr>
+          <tr><td class="py-3 text-xs text-slate-400 tabular font-semibold">4/10 13:55</td><td class="py-3 text-slate-700 truncate max-w-[320px]">ダッシュボードにフィルタ機能を...</td><td class="py-3 text-right tabular font-bold text-slate-800">8,120</td><td class="py-3 text-right tabular font-bold text-slate-800">$0.0421</td></tr>
+          <tr><td class="py-3 text-xs text-slate-400 tabular font-semibold">4/10 11:02</td><td class="py-3 text-slate-700 truncate max-w-[320px]">エラーが出ています</td><td class="py-3 text-right tabular font-bold text-slate-800">420</td><td class="py-3 text-right tabular font-bold text-slate-800">$0.0018</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+  <footer class="mx-auto max-w-6xl px-6 py-8 text-xs text-amber-400 text-center font-semibold">
+    案C - Friendly / Amber gradient / Rounded
+  </footer>
+</body>
+</html>
