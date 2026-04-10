@@ -1,21 +1,9 @@
 import { NextResponse } from "next/server";
-import { promises as fs } from "fs";
-import path from "path";
+import { Redis } from "@upstash/redis";
 import crypto from "crypto";
 
-/*
- * Local feedback store — writes to ./data/feedback.json on the filesystem.
- * Works for `next dev` on the developer's machine.
- *
- * NOTE: Vercel serverless has a read-only filesystem. Before deploying,
- * swap this for Vercel KV / Upstash Redis / Supabase:
- *
- *   import { kv } from "@vercel/kv";
- *   const entries = (await kv.get<Entry[]>("feedback")) ?? [];
- *   await kv.set("feedback", [...entries, newEntry]);
- */
-
 export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 type Entry = {
   id: string;
@@ -23,32 +11,23 @@ type Entry = {
   createdAt: string;
 };
 
-const DATA_FILE = path.join(process.cwd(), "data", "feedback.json");
+let _redis: Redis | null = null;
+function getRedis(): Redis {
+  if (!_redis) _redis = Redis.fromEnv();
+  return _redis;
+}
+
+const LIST_KEY = "feedback:entries";
 const MAX_LENGTH = 2000;
 const MAX_ENTRIES_PER_RESPONSE = 500;
-
-async function readAll(): Promise<Entry[]> {
-  try {
-    const content = await fs.readFile(DATA_FILE, "utf-8");
-    const parsed = JSON.parse(content);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-}
-
-async function writeAll(entries: Entry[]): Promise<void> {
-  await fs.mkdir(path.dirname(DATA_FILE), { recursive: true });
-  await fs.writeFile(DATA_FILE, JSON.stringify(entries, null, 2), "utf-8");
-}
+const MAX_ENTRIES_STORED = 1000;
 
 export async function GET() {
-  const entries = await readAll();
-  const sorted = entries
-    .slice()
-    .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
-    .slice(0, MAX_ENTRIES_PER_RESPONSE);
-  return NextResponse.json({ entries: sorted });
+  const raw = await getRedis().lrange<Entry | string>(LIST_KEY, 0, MAX_ENTRIES_PER_RESPONSE - 1);
+  const entries: Entry[] = raw.map((item) =>
+    typeof item === "string" ? (JSON.parse(item) as Entry) : item
+  );
+  return NextResponse.json({ entries });
 }
 
 export async function POST(request: Request) {
@@ -74,9 +53,9 @@ export async function POST(request: Request) {
     createdAt: new Date().toISOString(),
   };
 
-  const entries = await readAll();
-  entries.push(entry);
-  await writeAll(entries);
+  const r = getRedis();
+  await r.lpush(LIST_KEY, JSON.stringify(entry));
+  await r.ltrim(LIST_KEY, 0, MAX_ENTRIES_STORED - 1);
 
   return NextResponse.json({ entry });
 }
