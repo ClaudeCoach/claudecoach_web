@@ -8,6 +8,7 @@ import type {
   PlanType,
   ProjectData,
   SessionSummary,
+  ToolStat,
   TurnStat,
 } from "@/types";
 import {
@@ -246,6 +247,13 @@ export function detectPatterns(
       ? (shortReplyRuns * 3) / userMessages.length
       : 0;
 
+  const tools = buildToolBreakdown(allMessages);
+  const totalToolCost = tools.reduce((a, t) => a + t.cost, 0);
+  const bash = tools.find((t) => t.name === "Bash");
+  const bashShare =
+    totalToolCost > 0 && bash ? bash.cost / totalToolCost : 0;
+  const bashHeavy = !!bash && bash.calls >= 10 && bashShare > 0.25;
+
   return [
     { id: "long_prompt", detected: longPromptRatio > 0.2, value: longPromptRatio },
     { id: "low_cache", detected: cacheHitRate < 0.5, value: cacheHitRate },
@@ -261,7 +269,26 @@ export function detectPatterns(
       detected: clarificationRatio > 0.2,
       value: clarificationRatio,
     },
+    { id: "bash_heavy", detected: bashHeavy, value: bashShare },
   ];
+}
+
+export function buildToolBreakdown(messages: MessageStat[]): ToolStat[] {
+  const map = new Map<string, ToolStat>();
+  for (const m of messages) {
+    if (m.role !== "assistant" || m.toolCalls.length === 0) continue;
+    const perCall = m.estimatedCost / m.toolCalls.length;
+    for (const name of m.toolCalls) {
+      const existing = map.get(name);
+      if (existing) {
+        existing.calls += 1;
+        existing.cost += perCall;
+      } else {
+        map.set(name, { name, calls: 1, cost: perCall });
+      }
+    }
+  }
+  return Array.from(map.values()).sort((a, b) => b.cost - a.cost);
 }
 
 export function buildTurns(sessions: SessionSummary[]): TurnStat[] {
@@ -374,5 +401,6 @@ export function analyzeDashboard(
     patterns: detectPatterns(periodSessions, periodMessages),
     allMessages: periodMessages,
     turns,
+    toolBreakdown: buildToolBreakdown(periodMessages),
   };
 }

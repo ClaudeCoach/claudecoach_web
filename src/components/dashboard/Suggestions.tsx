@@ -23,6 +23,7 @@ const TITLE_KEYS: Record<RuleId, string> = {
   opus_overuse: "opus_overuse_title",
   long_session: "long_session_title",
   polite_words: "polite_title",
+  bash_heavy: "bash_heavy_title",
 };
 const DESC_KEYS: Record<RuleId, string> = {
   long_prompt: "long_prompt_desc",
@@ -31,6 +32,7 @@ const DESC_KEYS: Record<RuleId, string> = {
   opus_overuse: "opus_overuse_desc",
   long_session: "long_session_desc",
   polite_words: "polite_desc",
+  bash_heavy: "bash_heavy_desc",
 };
 
 function PriorityBadge({
@@ -73,6 +75,11 @@ function RuleCard({ rule }: { rule: RuleSuggestion }) {
       <p className="text-sm text-muted-foreground leading-relaxed">
         {ts(DESC_KEYS[rule.id])}
       </p>
+      {rule.estimatedSaving > 0.01 && (
+        <div className="mt-2 text-xs text-primary tabular-nums">
+          {ts("estimated_saving")}: ${rule.estimatedSaving.toFixed(2)}
+        </div>
+      )}
     </div>
   );
 }
@@ -121,7 +128,7 @@ export function Suggestions({ data }: { data: DashboardData }) {
   const ts = useTranslations("suggestions");
   const { locale } = useLocale();
 
-  const rules = buildRuleSuggestions(data.patterns);
+  const rules = buildRuleSuggestions(data.patterns, data);
 
   const [apiKey, setApiKey] = useState("");
   const [aiSuggestions, setAiSuggestions] = useState<AiSuggestion[]>([]);

@@ -115,6 +115,7 @@ export type DashboardData = {
   patterns: Pattern[];
   allMessages: MessageStat[];
   turns: TurnStat[];
+  toolBreakdown: ToolStat[];
 };
 
 export type RuleId =
@@ -123,12 +124,20 @@ export type RuleId =
   | "low_cache"
   | "opus_overuse"
   | "long_session"
-  | "polite_words";
+  | "polite_words"
+  | "bash_heavy";
 
 export type RuleSuggestion = {
   id: RuleId;
   priority: "high" | "medium" | "low";
   value: number;
+  estimatedSaving: number;
+};
+
+export type ToolStat = {
+  name: string;
+  calls: number;
+  cost: number;
 };
 
 export type AiSuggestion = {

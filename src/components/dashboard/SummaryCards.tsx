@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { DashboardData } from "@/types";
 import { useLocale } from "@/lib/i18n-provider";
+import { buildRuleSuggestions, totalEstimatedSaving } from "@/lib/rules";
 import { cn } from "@/lib/utils";
 
 function formatTokens(n: number, locale: "ja" | "en"): string {
@@ -73,7 +74,8 @@ export function SummaryCards({ data }: { data: DashboardData }) {
   const t = useTranslations("dashboard");
   const { locale } = useLocale();
   const totalTokens = data.totalInputTokens + data.totalOutputTokens;
-  const savings = data.totalCost * 0.4;
+  const rules = buildRuleSuggestions(data.patterns, data);
+  const savings = totalEstimatedSaving(rules);
 
   const roi = data.planROI;
   const roiValue =

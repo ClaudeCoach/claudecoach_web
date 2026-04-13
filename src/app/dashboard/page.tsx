@@ -7,6 +7,7 @@ import { Header } from "@/components/layout/Header";
 import { SummaryCards } from "@/components/dashboard/SummaryCards";
 import { TokenChart } from "@/components/dashboard/TokenChart";
 import { ProjectTable } from "@/components/dashboard/ProjectTable";
+import { ToolBreakdown } from "@/components/dashboard/ToolBreakdown";
 import { MessageList } from "@/components/dashboard/MessageList";
 import { ShareButton } from "@/components/dashboard/ShareButton";
 import { Suggestions } from "@/components/dashboard/Suggestions";
@@ -89,6 +90,7 @@ export default function DashboardPage() {
         <TokenChart data={data.chartData} />
         <Suggestions data={data} />
         <ProjectTable projects={data.projectBreakdown} />
+        <ToolBreakdown tools={data.toolBreakdown} />
         <MessageList turns={data.turns} />
       </main>
     </div>
