@@ -20,6 +20,7 @@ export function FindFolder() {
             <li>{t("find_folder_mac_1")}</li>
             <li>{t("find_folder_mac_2")}</li>
             <li>{t("find_folder_mac_3")}</li>
+            <li className="text-primary">{t("find_folder_mac_4")}</li>
           </ol>
         </div>
         <div>
@@ -27,6 +28,7 @@ export function FindFolder() {
           <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
             <li>{t("find_folder_win_1")}</li>
             <li>{t("find_folder_win_2")}</li>
+            <li className="text-primary">{t("find_folder_win_3")}</li>
           </ol>
         </div>
       </CardContent>
