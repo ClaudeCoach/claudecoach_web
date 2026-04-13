@@ -138,6 +138,9 @@ export function DropZone() {
 
   return (
     <div>
+      <p className="mb-3 text-center text-sm text-primary [word-break:keep-all] [overflow-wrap:break-word]">
+        {t("wifi_proof")}
+      </p>
       <div
         onDragOver={(e) => {
           e.preventDefault();

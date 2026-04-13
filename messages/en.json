@@ -30,6 +30,7 @@
     "find_folder_win_3": "Drag the projects folder into the drop zone below",
     "drop_here": "Drop the projects folder here",
     "or_click": "or click to pick the projects folder",
+    "wifi_proof": "🔒 Your data is never sent to a server. If you're unsure, turn off Wi-Fi before dropping — it still works.",
     "parsing": "Parsing...",
     "no_sessions": "No valid sessions found",
     "api_key_title": "AI suggestions (optional)",

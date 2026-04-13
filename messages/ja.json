@@ -30,6 +30,7 @@
     "find_folder_win_3": "表示された projects フォルダを下のエリアにドラッグ＆ドロップ",
     "drop_here": "projects フォルダをここにドロップ",
     "or_click": "または クリックして projects フォルダを選択",
+    "wifi_proof": "🔒 データはサーバーに送られません。気になる方はドロップする前に Wi-Fi を切って利用してください。",
     "parsing": "解析中...",
     "no_sessions": "有効なセッションが見つかりませんでした",
     "api_key_title": "AI改善提案を使う（任意）",
