@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { AlertTriangle, Info, Lightbulb, Loader2, Sparkles } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buildRuleSuggestions } from "@/lib/rules";
-import { getAiSuggestions, HaikuError } from "@/lib/haiku";
+import { getAiSuggestions, HaikuError, type AiMode } from "@/lib/haiku";
 import { storage } from "@/lib/storage";
 import { useLocale } from "@/lib/i18n-provider";
 import { cn } from "@/lib/utils";
@@ -131,28 +131,26 @@ export function Suggestions({ data }: { data: DashboardData }) {
   const rules = buildRuleSuggestions(data.patterns, data);
 
   const [apiKey, setApiKey] = useState("");
+  const [aiMode, setAiMode] = useState<AiMode>("light");
   const [aiSuggestions, setAiSuggestions] = useState<AiSuggestion[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setApiKey(storage.getApiKey());
+    setAiMode(storage.getAiMode());
   }, []);
+
+  function onModeChange(mode: AiMode) {
+    setAiMode(mode);
+    storage.setAiMode(mode);
+  }
 
   async function runAi() {
     setLoading(true);
     setError(null);
     try {
-      const samplePrompts = data.allMessages
-        .filter((m) => m.role === "user" && m.promptText)
-        .slice(0, 5)
-        .map((m) => m.promptText);
-      const results = await getAiSuggestions(
-        data.patterns,
-        samplePrompts,
-        apiKey,
-        locale
-      );
+      const results = await getAiSuggestions(data, apiKey, locale, aiMode);
       setAiSuggestions(results);
     } catch (err) {
       if (err instanceof HaikuError) {
@@ -202,6 +200,37 @@ export function Suggestions({ data }: { data: DashboardData }) {
             </div>
           ) : (
             <div className="space-y-3">
+              <div className="space-y-1.5">
+                <div className="inline-flex rounded-md border border-border overflow-hidden text-xs">
+                  <button
+                    onClick={() => onModeChange("light")}
+                    className={cn(
+                      "px-3 h-8 font-semibold transition-colors",
+                      aiMode === "light"
+                        ? "bg-primary/15 text-primary"
+                        : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {ts("ai_mode_light")}
+                  </button>
+                  <button
+                    onClick={() => onModeChange("detailed")}
+                    className={cn(
+                      "px-3 h-8 font-semibold border-l border-border transition-colors",
+                      aiMode === "detailed"
+                        ? "bg-primary/15 text-primary"
+                        : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {ts("ai_mode_detailed")}
+                  </button>
+                </div>
+                <p className="text-[11px] text-muted-foreground leading-snug">
+                  {aiMode === "detailed"
+                    ? ts("ai_mode_detailed_desc")
+                    : ts("ai_mode_light_desc")}
+                </p>
+              </div>
               {aiSuggestions.length === 0 && !loading && !error && (
                 <button
                   onClick={runAi}

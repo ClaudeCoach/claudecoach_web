@@ -1,10 +1,12 @@
 import type { Locale, PeriodType, PlanType } from "@/types";
+import type { AiMode } from "./haiku";
 
 const KEYS = {
   API_KEY: "claudecoach_api_key",
   LOCALE: "claudecoach_locale",
   PLAN: "claudecoach_plan",
   PERIOD: "claudecoach_period",
+  AI_MODE: "claudecoach_ai_mode",
 } as const;
 
 function safeGet(key: string): string | null {
@@ -49,4 +51,7 @@ export const storage = {
   getPeriod: (): PeriodType =>
     (safeGet(KEYS.PERIOD) as PeriodType) ?? "weekly",
   setPeriod: (period: PeriodType) => safeSet(KEYS.PERIOD, period),
+
+  getAiMode: (): AiMode => (safeGet(KEYS.AI_MODE) as AiMode) ?? "light",
+  setAiMode: (mode: AiMode) => safeSet(KEYS.AI_MODE, mode),
 };
