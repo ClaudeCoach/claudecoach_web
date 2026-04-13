@@ -101,6 +101,21 @@
     "long_session_title": "作業時間が長すぎます",
     "long_session_desc": "2時間以上の連続作業が多い。途中で/compactを使うと効率が上がります",
     "polite_title": "不要な丁寧表現が含まれています",
-    "polite_desc": "「よろしくお願いします」などはトークンの無駄です。短く指示を出しましょう"
+    "polite_desc": "「よろしくお願いします」などはトークンの無駄です。短く指示を出しましょう",
+    "priority_high": "高",
+    "priority_medium": "中",
+    "priority_low": "低",
+    "rule_based": "ルールベース提案",
+    "ai_based": "AI改善提案",
+    "ai_generate": "AI提案を生成",
+    "ai_generating": "生成中...",
+    "ai_regenerate": "再生成",
+    "ai_error_invalid_key": "APIキーが無効です",
+    "ai_error_rate_limit": "レート制限に達しました。しばらく待ってから再試行してください",
+    "ai_error_network": "ネットワークエラーが発生しました",
+    "ai_error_parse": "AIの応答を解釈できませんでした",
+    "ai_before": "Before",
+    "ai_after": "After",
+    "no_issues": "気になる使い方は見つかりませんでした 👍"
   }
 }

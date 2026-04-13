@@ -117,14 +117,24 @@ export type DashboardData = {
   turns: TurnStat[];
 };
 
-export type Suggestion = {
-  type: "rule" | "ai";
+export type RuleId =
+  | "long_prompt"
+  | "clarification_loop"
+  | "low_cache"
+  | "opus_overuse"
+  | "long_session"
+  | "polite_words";
+
+export type RuleSuggestion = {
+  id: RuleId;
   priority: "high" | "medium" | "low";
+  value: number;
+};
+
+export type AiSuggestion = {
   title: string;
   description: string;
-  estimatedSaving: number;
-  example?: {
-    before: string;
-    after: string;
-  };
+  before?: string;
+  after?: string;
+  estimatedSaving?: number;
 };

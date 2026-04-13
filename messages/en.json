@@ -101,6 +101,21 @@
     "long_session_title": "Sessions are too long",
     "long_session_desc": "Long continuous sessions detected. Use /compact to improve efficiency.",
     "polite_title": "Unnecessary polite phrases",
-    "polite_desc": "Phrases like 'please' and 'thank you' waste tokens. Be direct."
+    "polite_desc": "Phrases like 'please' and 'thank you' waste tokens. Be direct.",
+    "priority_high": "High",
+    "priority_medium": "Medium",
+    "priority_low": "Low",
+    "rule_based": "Rule-based suggestions",
+    "ai_based": "AI suggestions",
+    "ai_generate": "Generate AI suggestions",
+    "ai_generating": "Generating...",
+    "ai_regenerate": "Regenerate",
+    "ai_error_invalid_key": "Invalid API key",
+    "ai_error_rate_limit": "Rate limit reached. Try again in a moment.",
+    "ai_error_network": "Network error",
+    "ai_error_parse": "Could not parse AI response",
+    "ai_before": "Before",
+    "ai_after": "After",
+    "no_issues": "No issues found in your usage patterns 👍"
   }
 }

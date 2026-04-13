@@ -9,6 +9,7 @@ import { TokenChart } from "@/components/dashboard/TokenChart";
 import { ProjectTable } from "@/components/dashboard/ProjectTable";
 import { MessageList } from "@/components/dashboard/MessageList";
 import { ShareButton } from "@/components/dashboard/ShareButton";
+import { Suggestions } from "@/components/dashboard/Suggestions";
 import { useAnalysis } from "@/lib/analysis-context";
 import { useLocale } from "@/lib/i18n-provider";
 import { analyzeDashboard, detectPlan } from "@/lib/analyzer";
@@ -86,6 +87,7 @@ export default function DashboardPage() {
       <main className="container mx-auto px-4 py-6 space-y-6">
         <SummaryCards data={data} />
         <TokenChart data={data.chartData} />
+        <Suggestions data={data} />
         <ProjectTable projects={data.projectBreakdown} />
         <MessageList turns={data.turns} />
       </main>
