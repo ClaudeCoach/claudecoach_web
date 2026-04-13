@@ -126,6 +126,7 @@ function AiCard({ suggestion }: { suggestion: AiSuggestion }) {
 export function Suggestions({ data }: { data: DashboardData }) {
   const t = useTranslations("dashboard");
   const ts = useTranslations("suggestions");
+  const tu = useTranslations("upload");
   const { locale } = useLocale();
 
   const rules = buildRuleSuggestions(data.patterns, data);
@@ -194,9 +195,34 @@ export function Suggestions({ data }: { data: DashboardData }) {
             {ts("ai_based")}
           </div>
           {!apiKey ? (
-            <div className="rounded-md border border-dashed border-border bg-background/40 p-4 text-sm text-muted-foreground flex items-start gap-2">
-              <Info className="h-4 w-4 shrink-0 mt-0.5" />
-              <span>{t("suggestions_ai_locked")}</span>
+            <div className="space-y-2 rounded-md border border-dashed border-border bg-background/40 p-4">
+              <div className="flex items-start gap-2 text-sm text-muted-foreground">
+                <Info className="h-4 w-4 shrink-0 mt-0.5" />
+                <span>{t("suggestions_ai_locked")}</span>
+              </div>
+              <input
+                type="password"
+                placeholder="sk-ant-..."
+                onChange={(e) => {
+                  const v = e.target.value.trim();
+                  if (v) {
+                    storage.setApiKey(v);
+                    setApiKey(v);
+                  }
+                }}
+                className="w-full h-9 rounded border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              />
+              <p className="text-[11px] text-muted-foreground">
+                {tu("api_key_note")}
+              </p>
+              <a
+                href="https://console.anthropic.com/settings/keys"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[11px] text-primary underline"
+              >
+                {tu("api_key_howto")}
+              </a>
             </div>
           ) : (
             <div className="space-y-3">
