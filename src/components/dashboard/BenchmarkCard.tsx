@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
-import { ArrowDown, ArrowUp, BarChart3, Loader2 } from "lucide-react";
+import { ArrowDown, ArrowUp, BarChart3, Loader2, Share2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { storage, type BenchmarkSnapshot } from "@/lib/storage";
 import { cn } from "@/lib/utils";
@@ -63,6 +63,64 @@ function diffSign(field: Field, you: number, avg: number): "good" | "bad" | "eq"
   return diff > 0 ? "good" : "bad";
 }
 
+const SHARE_URL =
+  process.env.NEXT_PUBLIC_APP_URL ?? "https://claudecoach-web.vercel.app/";
+
+function relativeMagnitude(field: Field, you: number, avg: number): number {
+  if (avg === 0 && you === 0) return 0;
+  const denom = Math.max(Math.abs(avg), 1e-6);
+  return Math.abs(you - avg) / denom;
+}
+
+function buildShareText(
+  snapshot: BenchmarkSnapshot,
+  averages: Record<Field, number>,
+  count: number,
+  t: (key: string, vars?: Record<string, string>) => string,
+  metricLabel: (field: Field) => string
+): string {
+  const ranked = FIELDS.map((f) => ({
+    field: f,
+    you: snapshot[f],
+    avg: averages[f],
+    sign: diffSign(f, snapshot[f], averages[f]),
+    mag: relativeMagnitude(f, snapshot[f], averages[f]),
+  }));
+
+  const goods = ranked
+    .filter((r) => r.sign === "good")
+    .sort((a, b) => b.mag - a.mag);
+  const bads = ranked
+    .filter((r) => r.sign === "bad")
+    .sort((a, b) => b.mag - a.mag);
+
+  const picked: typeof ranked = [];
+  if (goods[0]) picked.push(goods[0]);
+  if (bads[0]) picked.push(bads[0]);
+  for (const r of [...goods.slice(1), ...bads.slice(1)]) {
+    if (picked.length >= 3) break;
+    picked.push(r);
+  }
+
+  const lines = picked.map((r) => {
+    const icon = r.sign === "good" ? "✅" : "⚠️";
+    const label = metricLabel(r.field);
+    const you = formatValue(r.field, r.you);
+    const avg = formatValue(r.field, r.avg);
+    return `${icon} ${label}: ${you} (avg ${avg})`;
+  });
+
+  return [
+    t("benchmark_share_intro"),
+    "",
+    ...lines,
+    "",
+    t("benchmark_share_sample", { count: String(count) }),
+    "",
+    SHARE_URL,
+  ].join("\n");
+}
+
 export function BenchmarkCard({ data }: { data: DashboardData }) {
   const t = useTranslations("dashboard");
   const [optin, setOptin] = useState(false);
@@ -72,6 +130,25 @@ export function BenchmarkCard({ data }: { data: DashboardData }) {
   const [response, setResponse] = useState<ApiResponse | null>(null);
 
   const snapshot = buildSnapshot(data);
+
+  function metricLabel(field: Field): string {
+    return t(`benchmark_metric_${field}`);
+  }
+
+  function onShare() {
+    if (!response?.averages) return;
+    const text = buildShareText(
+      snapshot,
+      response.averages,
+      response.count,
+      t,
+      metricLabel
+    );
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+      text
+    )}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
 
   const fetchAverages = useCallback(async () => {
     try {
@@ -158,20 +235,29 @@ export function BenchmarkCard({ data }: { data: DashboardData }) {
 
         {optin && response && response.averages && (
           <>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-2">
               <p className="text-xs text-muted-foreground">
                 {t("benchmark_count", { count: String(response.count) })}
               </p>
-              <button
-                onClick={submit}
-                disabled={loading}
-                className="inline-flex h-7 items-center gap-1.5 rounded-md border border-border bg-background px-2 text-[11px] font-semibold text-muted-foreground hover:text-primary hover:border-primary/60 transition-colors disabled:opacity-50"
-              >
-                {loading ? (
-                  <Loader2 className="h-3 w-3 animate-spin" />
-                ) : null}
-                {t("benchmark_update")}
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={onShare}
+                  className="inline-flex h-7 items-center gap-1.5 rounded-md border border-primary/40 bg-primary/10 px-2 text-[11px] font-semibold text-primary hover:bg-primary/20 transition-colors"
+                >
+                  <Share2 className="h-3 w-3" />
+                  {t("benchmark_share")}
+                </button>
+                <button
+                  onClick={submit}
+                  disabled={loading}
+                  className="inline-flex h-7 items-center gap-1.5 rounded-md border border-border bg-background px-2 text-[11px] font-semibold text-muted-foreground hover:text-primary hover:border-primary/60 transition-colors disabled:opacity-50"
+                >
+                  {loading ? (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  ) : null}
+                  {t("benchmark_update")}
+                </button>
+              </div>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
