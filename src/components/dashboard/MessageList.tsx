@@ -105,12 +105,12 @@ export function MessageList({ turns }: { turns: TurnStat[] }) {
     {}
   );
 
-  function cycleExpand(key: string) {
+  function cycleExpand(key: string, hasMore: boolean) {
     setExpanded((prev) => {
       const next = { ...prev };
       const cur = prev[key];
       if (!cur) next[key] = "short";
-      else if (cur === "short") next[key] = "full";
+      else if (cur === "short" && hasMore) next[key] = "full";
       else delete next[key];
       return next;
     });
@@ -193,16 +193,16 @@ export function MessageList({ turns }: { turns: TurnStat[] }) {
               const key = `${turn.timestamp}-${i}`;
               const state = expanded[key];
               const isOpen = state !== undefined;
+              const hasMore = turn.promptText.length > 200;
               const previewText =
                 state === "full"
                   ? turn.promptText
                   : turn.promptText.slice(0, 200);
-              const truncated =
-                state !== "full" && turn.promptText.length > 200;
+              const truncated = state !== "full" && hasMore;
               return (
                 <Fragment key={key}>
                   <TableRow
-                    onClick={() => cycleExpand(key)}
+                    onClick={() => cycleExpand(key, hasMore)}
                     className="cursor-pointer"
                   >
                     <TableCell className="text-muted-foreground">
@@ -234,7 +234,7 @@ export function MessageList({ turns }: { turns: TurnStat[] }) {
                       <TableCell
                         colSpan={5}
                         className="py-4"
-                        onClick={() => cycleExpand(key)}
+                        onClick={() => cycleExpand(key, hasMore)}
                       >
                         <div className="space-y-4 cursor-pointer">
                           <div>
