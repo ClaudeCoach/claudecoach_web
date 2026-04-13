@@ -73,7 +73,7 @@ export function SummaryCards({ data }: { data: DashboardData }) {
   const t = useTranslations("dashboard");
   const { locale } = useLocale();
   const totalTokens = data.totalInputTokens + data.totalOutputTokens;
-  const savings = data.planROI.apiEquivalent * 0.4;
+  const savings = data.totalCost * 0.4;
 
   const roi = data.planROI;
   const roiValue =
@@ -88,7 +88,7 @@ export function SummaryCards({ data }: { data: DashboardData }) {
       />
       <StatCard
         label={t("api_cost")}
-        value={`$${roi.apiEquivalent.toFixed(2)}`}
+        value={`$${data.totalCost.toFixed(2)}`}
         sub={`msgs=${data.turns.length}`}
       />
       <StatCard
@@ -96,7 +96,7 @@ export function SummaryCards({ data }: { data: DashboardData }) {
         value={`${roiValue}${
           roi.isProfitable === true ? " ✓" : roi.isProfitable === false ? " ✗" : ""
         }`}
-        sub={roi.message}
+        sub={`${roi.message} · ${t("roi_window")}`}
         highlight={roi.isProfitable === true}
       />
       <StatCard label={t("saving")} value={`$${savings.toFixed(2)}`} />

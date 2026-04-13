@@ -45,6 +45,7 @@
     "total_tokens": "Total tokens",
     "api_cost": "API cost",
     "roi": "ROI",
+    "roi_window": "last 30 days",
     "saving": "Potential saving",
     "sessions": "sessions",
     "messages": "messages",

@@ -45,6 +45,7 @@
     "total_tokens": "合計使用量",
     "api_cost": "かかった費用",
     "roi": "元取れてる？",
+    "roi_window": "直近30日",
     "saving": "節約できる額",
     "sessions": "セッション",
     "messages": "メッセージ",
