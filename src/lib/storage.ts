@@ -7,7 +7,19 @@ const KEYS = {
   PLAN: "claudecoach_plan",
   PERIOD: "claudecoach_period",
   AI_MODE: "claudecoach_ai_mode",
+  BENCHMARK_OPTIN: "claudecoach_benchmark_optin",
+  BENCHMARK_LAST: "claudecoach_benchmark_last",
 } as const;
+
+export type BenchmarkSnapshot = {
+  long_prompt: number;
+  clarification: number;
+  cache_hit: number;
+  opus: number;
+  session_min: number;
+  polite: number;
+  cost: number;
+};
 
 function safeGet(key: string): string | null {
   if (typeof window === "undefined") return null;
@@ -54,4 +66,21 @@ export const storage = {
 
   getAiMode: (): AiMode => (safeGet(KEYS.AI_MODE) as AiMode) ?? "light",
   setAiMode: (mode: AiMode) => safeSet(KEYS.AI_MODE, mode),
+
+  getBenchmarkOptin: (): boolean =>
+    safeGet(KEYS.BENCHMARK_OPTIN) === "1",
+  setBenchmarkOptin: (v: boolean) =>
+    v ? safeSet(KEYS.BENCHMARK_OPTIN, "1") : safeRemove(KEYS.BENCHMARK_OPTIN),
+
+  getBenchmarkLast: (): BenchmarkSnapshot | null => {
+    const raw = safeGet(KEYS.BENCHMARK_LAST);
+    if (!raw) return null;
+    try {
+      return JSON.parse(raw) as BenchmarkSnapshot;
+    } catch {
+      return null;
+    }
+  },
+  setBenchmarkLast: (snap: BenchmarkSnapshot) =>
+    safeSet(KEYS.BENCHMARK_LAST, JSON.stringify(snap)),
 };

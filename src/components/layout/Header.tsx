@@ -47,6 +47,12 @@ export function Header({
             {"// "}
             {tf("nav_link")}
           </Link>
+          <Link
+            href="/privacy"
+            className="text-xs font-semibold lowercase text-muted-foreground hover:text-primary transition-colors"
+          >
+            {"// privacy"}
+          </Link>
           {showControls && plan && onPlanChange && (
             <PlanToggle current={plan} onChange={onPlanChange} />
           )}

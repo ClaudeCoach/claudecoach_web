@@ -46,8 +46,19 @@ export default function Home() {
 
         <ApiKeyInput />
       </main>
-      <footer className="container mx-auto max-w-3xl px-4 py-8 text-center text-[10px] text-muted-foreground/60">
-        {"// claudecoach v1.0 — browser-only, no tracking"}
+      <footer className="container mx-auto max-w-3xl px-4 py-8 text-center text-[10px] text-muted-foreground/60 space-x-3">
+        <span>{"// claudecoach v1.0 — browser-only, no tracking"}</span>
+        <a href="/privacy" className="underline hover:text-primary">
+          privacy
+        </a>
+        <a
+          href="https://github.com/ClaudeCoach/claudecoach_web"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline hover:text-primary"
+        >
+          github
+        </a>
       </footer>
     </div>
   );

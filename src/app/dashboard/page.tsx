@@ -11,6 +11,7 @@ import { ToolBreakdown } from "@/components/dashboard/ToolBreakdown";
 import { MessageList } from "@/components/dashboard/MessageList";
 import { ShareButton } from "@/components/dashboard/ShareButton";
 import { Suggestions } from "@/components/dashboard/Suggestions";
+import { BenchmarkCard } from "@/components/dashboard/BenchmarkCard";
 import { useAnalysis } from "@/lib/analysis-context";
 import { useLocale } from "@/lib/i18n-provider";
 import { analyzeDashboard, detectPlan } from "@/lib/analyzer";
@@ -89,6 +90,7 @@ export default function DashboardPage() {
         <SummaryCards data={data} />
         <TokenChart data={data.chartData} />
         <Suggestions data={data} />
+        <BenchmarkCard data={data} />
         <ProjectTable projects={data.projectBreakdown} />
         <ToolBreakdown tools={data.toolBreakdown} />
         <MessageList turns={data.turns} />
