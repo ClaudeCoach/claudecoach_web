@@ -38,7 +38,6 @@ export async function getAiSuggestions(
 ): Promise<AiSuggestion[]> {
   if (!apiKey) return [];
 
-  const lang = locale === "ja" ? "Japanese" : "English";
   const stats = patternsToStats(patterns);
 
   const trimmed = samplePrompts
@@ -46,20 +45,50 @@ export async function getAiSuggestions(
     .slice(0, 5)
     .map((p) => p.slice(0, 100));
 
-  const prompt = `Analyze the following Claude Code usage statistics and generate exactly 3 concrete improvement suggestions in ${lang}.
+  const prompt =
+    locale === "ja"
+      ? `あなたは Claude Code のヘビーユーザー向けコーチです。以下の使用統計をもとに、具体的な改善提案をちょうど3件、自然な日本語で作ってください。
 
-Statistics:
-- Long prompt ratio: ${(stats.longPromptRatio * 100).toFixed(0)}%
+# 使用統計
+- プロンプトが長すぎる割合（500文字超）: ${(stats.longPromptRatio * 100).toFixed(0)}%
+- 短い確認のやりとりが連続する割合: ${(stats.clarificationRatio * 100).toFixed(0)}%
+- キャッシュヒット率: ${(stats.cacheHitRate * 100).toFixed(0)}%
+- Opus使用率: ${(stats.opusRatio * 100).toFixed(0)}%
+- 平均セッション時間: ${stats.avgSessionMinutes.toFixed(0)}分
+- 丁寧表現（お願いします等）を含むプロンプトの割合: ${(stats.politeRatio * 100).toFixed(0)}%
+
+# 実際のプロンプト例（各先頭100文字）
+${trimmed.map((p, i) => `${i + 1}. ${p}`).join("\n")}
+
+# 出力ルール
+- 「澄清」「廃棄ループ」「清算」など中国語寄りの直訳は使わない。自然な日本語で書くこと（例:「確認のやりとり」「確認往復」）
+- 提案は具体的で実行可能なものにする
+- before/after は実際のプロンプト例を意識した短い具体例にする
+- estimatedSaving は USD 単位の数値（概算でよい）
+- 他の説明文は一切出力せず、JSON 配列のみを返す
+
+# スキーマ
+[{"title": string, "description": string, "before": string, "after": string, "estimatedSaving": number}]`
+      : `You are a coach for heavy Claude Code users. Based on the following usage statistics, produce exactly 3 concrete improvement suggestions in natural English.
+
+# Statistics
+- Long prompt ratio (>500 chars): ${(stats.longPromptRatio * 100).toFixed(0)}%
 - Clarification loop ratio: ${(stats.clarificationRatio * 100).toFixed(0)}%
 - Cache hit rate: ${(stats.cacheHitRate * 100).toFixed(0)}%
 - Opus usage ratio: ${(stats.opusRatio * 100).toFixed(0)}%
 - Avg session duration: ${stats.avgSessionMinutes.toFixed(0)} min
 - Polite expression ratio: ${(stats.politeRatio * 100).toFixed(0)}%
 
-Sample prompts (first 100 chars each):
+# Sample prompts (first 100 chars each)
 ${trimmed.map((p, i) => `${i + 1}. ${p}`).join("\n")}
 
-Return a JSON array with exactly 3 items and no other text. Schema:
+# Rules
+- Suggestions must be concrete and actionable
+- before/after should be short, realistic examples
+- estimatedSaving is a USD number (rough estimate is fine)
+- Return the JSON array only, no other text
+
+# Schema
 [{"title": string, "description": string, "before": string, "after": string, "estimatedSaving": number}]`;
 
   let response: Response;
