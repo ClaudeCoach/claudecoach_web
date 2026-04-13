@@ -82,7 +82,7 @@ export function parseJsonlContent(
     if (message.content) {
       for (const block of message.content) {
         if (block.type === "text" && block.text) {
-          if (!promptText) promptText = block.text.slice(0, 100);
+          if (!promptText) promptText = block.text.slice(0, 4000);
           promptLength += block.text.length;
         } else if (block.type === "tool_use" && block.name) {
           toolCalls.push(block.name);

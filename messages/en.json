@@ -56,7 +56,20 @@
     "cost": "Cost",
     "preview": "Preview",
     "no_data": "No data. Drop a folder from the top page to start.",
-    "back_to_top": "Back to top"
+    "back_to_top": "Back to top",
+    "breakdown": "Cost breakdown",
+    "input_tokens": "Input tokens",
+    "output_tokens": "Output tokens",
+    "cache_read": "Cache read",
+    "cache_write": "Cache write",
+    "full_prompt": "Full prompt",
+    "click_to_expand": "Click to expand",
+    "click_for_more": "Click again for full",
+    "share": "Share on X",
+    "share_text_profitable": "I analyzed my Claude Code usage with ClaudeCoach: on the {plan} plan I used ${api} worth of API → saved ${saving} ✨",
+    "share_text_unprofitable": "I analyzed my Claude Code usage with ClaudeCoach: on the {plan} plan I only used ${api} of API value… need to use it more 💦",
+    "share_text_api": "I analyzed my Claude Code usage with ClaudeCoach: ${cost} on the API plan 📊",
+    "share_text_suffix": "\n\nTry it yourself 👇\n"
   },
   "feedback": {
     "title": "Feedback",

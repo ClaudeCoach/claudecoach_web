@@ -278,11 +278,27 @@ export function buildTurns(sessions: SessionSummary[]): TurnStat[] {
           promptLength: m.promptLength,
           tokens: 0,
           cost: 0,
+          inputTokens: 0,
+          outputTokens: 0,
+          cacheReadTokens: 0,
+          cacheCreationTokens: 0,
+          inputCost: 0,
+          outputCost: 0,
+          cacheReadCost: 0,
+          cacheCreationCost: 0,
         };
       } else if (m.role === "assistant" && current) {
         current.tokens +=
           m.inputTokens + m.outputTokens + m.cacheReadTokens;
         current.cost += m.estimatedCost;
+        current.inputTokens += m.inputTokens;
+        current.outputTokens += m.outputTokens;
+        current.cacheReadTokens += m.cacheReadTokens;
+        current.cacheCreationTokens += m.cacheCreationTokens;
+        current.inputCost += m.inputTokens * INPUT_TOKEN_PRICE;
+        current.outputCost += m.outputTokens * OUTPUT_TOKEN_PRICE;
+        current.cacheReadCost += m.cacheReadTokens * CACHE_READ_PRICE;
+        current.cacheCreationCost += m.cacheCreationTokens * CACHE_WRITE_PRICE;
       }
     }
     if (current) turns.push(current);

@@ -14,6 +14,7 @@ type HeaderProps = {
   onPlanChange?: (plan: PlanType) => void;
   period?: PeriodType;
   onPeriodChange?: (period: PeriodType) => void;
+  rightSlot?: React.ReactNode;
 };
 
 export function Header({
@@ -22,6 +23,7 @@ export function Header({
   onPlanChange,
   period,
   onPeriodChange,
+  rightSlot,
 }: HeaderProps) {
   const tf = useTranslations("feedback");
   return (
@@ -51,6 +53,7 @@ export function Header({
           {showControls && period && onPeriodChange && (
             <PeriodToggle current={period} onChange={onPeriodChange} />
           )}
+          {rightSlot}
           <LangToggle />
         </div>
       </div>

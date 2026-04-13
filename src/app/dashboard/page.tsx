@@ -8,6 +8,7 @@ import { SummaryCards } from "@/components/dashboard/SummaryCards";
 import { TokenChart } from "@/components/dashboard/TokenChart";
 import { ProjectTable } from "@/components/dashboard/ProjectTable";
 import { MessageList } from "@/components/dashboard/MessageList";
+import { ShareButton } from "@/components/dashboard/ShareButton";
 import { useAnalysis } from "@/lib/analysis-context";
 import { useLocale } from "@/lib/i18n-provider";
 import { analyzeDashboard, detectPlan } from "@/lib/analyzer";
@@ -80,6 +81,7 @@ export default function DashboardPage() {
         onPlanChange={onPlanChange}
         period={period}
         onPeriodChange={onPeriodChange}
+        rightSlot={<ShareButton data={data} plan={plan} />}
       />
       <main className="container mx-auto px-4 py-6 space-y-6">
         <SummaryCards data={data} />

@@ -92,6 +92,14 @@ export type TurnStat = {
   promptLength: number;
   tokens: number;
   cost: number;
+  inputTokens: number;
+  outputTokens: number;
+  cacheReadTokens: number;
+  cacheCreationTokens: number;
+  inputCost: number;
+  outputCost: number;
+  cacheReadCost: number;
+  cacheCreationCost: number;
 };
 
 export type DashboardData = {

@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ClaudeCoach Web
 
-## Getting Started
+**Claude Code の使い方をブラウザだけで分析できるツール。**
+インストール不要、会話の中身は外に出ません。
 
-First, run the development server:
+🔗 https://claudecoach-web.vercel.app/
+
+---
+
+## これは何？
+
+Claude Code を使っていると、
+
+- どのプロジェクトにいくら使ったのか
+- Pro / Max プランで「元が取れているか」
+- どこを直せば節約できるのか
+
+が分からなくなりがちです。`~/.claude/projects` フォルダをドロップするだけで、それを可視化します。
+
+## 特長
+
+- **インストール不要** — URL を開いてフォルダをドロップするだけ
+- **プライバシー完全保護** — JSONL のパース・集計はすべてブラウザ内で完結。会話本文や API キーをサーバーに送りません
+- **プラン自動判定** — 直近 8 日間の 5 時間ウィンドウ最大トークンから Pro / Max 5x / Max 20x / API を推定（手動切替も可）
+- **週次 / 月次切替** — グラフと集計を切り替え
+- **メッセージ別の内訳** — クリックで展開、コスト内訳（入力 / 出力 / キャッシュ読込・書込）まで確認可能
+- **X シェアボタン** — ROI を 1 クリックで投稿
+- **フィードバックページ** — 匿名で一行コメントを投げられます
+- **日 / 英対応**
+
+## 技術スタック
+
+- Next.js 14 (App Router) + TypeScript
+- Tailwind CSS + shadcn/ui
+- Recharts
+- next-intl (ja / en)
+- Upstash Redis（フィードバック保存のみ）
+- Vercel ホスティング
+
+バックエンドはフィードバック API（Redis）以外なし。分析処理は完全にクライアントサイドです。
+
+## ローカル開発
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`http://localhost:3000` を開きます。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 環境変数（任意）
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+フィードバック機能を動かす場合のみ `.env.local` に設定：
 
-## Learn More
+```
+KV_REST_API_URL=...
+KV_REST_API_TOKEN=...
+```
 
-To learn more about Next.js, take a look at the following resources:
+Vercel + Upstash Marketplace 連携時はこれらが自動で注入されます。
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ライセンス
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+MIT
 
-## Deploy on Vercel
+## Anthropic との関係
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+本ツールは Anthropic 社とは無関係の非公式ツールです。"Claude" は Anthropic 社の商標です。

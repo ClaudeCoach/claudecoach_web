@@ -27,10 +27,10 @@ export default function Home() {
             />
           </div>
           <div className="space-y-4">
-            <h1 className="text-5xl sm:text-6xl font-bold tracking-tight leading-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-tight [word-break:keep-all] [overflow-wrap:break-word]">
               {t("hero_title")}
             </h1>
-            <p className="text-xl sm:text-2xl text-muted-foreground">
+            <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground [word-break:keep-all] [overflow-wrap:break-word]">
               {t("hero_sub")}
             </p>
             <p className="text-sm text-primary/80">

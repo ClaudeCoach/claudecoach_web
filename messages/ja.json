@@ -15,8 +15,8 @@
     "auto_detected": "自動検出"
   },
   "upload": {
-    "hero_title": "Claude Codeの使い方をかんたんに分析",
-    "hero_sub": "フォルダをドロップするだけで、トークンの使い道が見えます",
+    "hero_title": "あなたのClaudeプラン、元取れてる？",
+    "hero_sub": "Claude Codeのログをドロップするだけで、使った金額と改善ポイントが見えます",
     "privacy_note": "会話の内容はブラウザの外に出ません",
     "find_folder_title": "フォルダの見つけ方",
     "find_folder_mac_title": "Macの場合",
@@ -56,7 +56,20 @@
     "cost": "コスト",
     "preview": "内容",
     "no_data": "データがありません。トップページからフォルダをドロップしてください",
-    "back_to_top": "トップに戻る"
+    "back_to_top": "トップに戻る",
+    "breakdown": "コスト内訳",
+    "input_tokens": "入力トークン",
+    "output_tokens": "出力トークン",
+    "cache_read": "キャッシュ読込",
+    "cache_write": "キャッシュ書込",
+    "full_prompt": "プロンプト全文",
+    "click_to_expand": "クリックで詳細",
+    "click_for_more": "もう一度クリックで全文",
+    "share": "Xでシェア",
+    "share_text_profitable": "ClaudeCoachで分析したら、Claude {plan}プランで${api}ぶん使ってた！実質${saving}お得 ✨",
+    "share_text_unprofitable": "ClaudeCoachで分析したら、Claude {plan}プランで${api}ぶんしか使えてなかった…元取らなきゃ💦",
+    "share_text_api": "ClaudeCoachで分析したら、Claude APIで合計${cost}使ってた📊",
+    "share_text_suffix": "\n\nあなたも試せます👇\n"
   },
   "feedback": {
     "title": "フィードバック",
