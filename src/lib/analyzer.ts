@@ -404,3 +404,42 @@ export function analyzeDashboard(
     toolBreakdown: buildToolBreakdown(periodMessages),
   };
 }
+
+export function avgTokensPerClarification(data: DashboardData): number {
+  const clarifications = data.allMessages.filter(
+    (m) => m.role === "user" && m.promptLength < 50 && m.promptLength > 0,
+  );
+  if (clarifications.length === 0) return 0;
+  const totalTokens = clarifications.reduce((sum, m) => sum + m.inputTokens, 0);
+  return Math.round(totalTokens / clarifications.length);
+}
+
+export function worstPrompts(
+  data: DashboardData,
+  n = 3,
+): Array<{ text: string; cost: number; tokens: number }> {
+  return data.allMessages
+    .filter((m) => m.role === "user" && m.promptText)
+    .sort((a, b) => b.estimatedCost - a.estimatedCost)
+    .slice(0, n)
+    .map((m) => ({
+      text: m.promptText.slice(0, 200),
+      cost: m.estimatedCost,
+      tokens: m.inputTokens,
+    }));
+}
+
+export function patternWasteCosts(
+  data: DashboardData,
+): Record<string, number> {
+  const get = (id: string) =>
+    data.patterns.find((p) => p.id === id)?.value ?? 0;
+  return {
+    clarification: data.totalCost * get("clarification_loop"),
+    longPrompt: data.totalCost * get("long_prompt") * 0.1,
+    opus: data.totalCost * get("opus_overuse") * 0.4,
+    polite: data.totalCost * get("polite_words") * 0.02,
+    longSession: data.totalCost * get("long_session") * 0.35,
+    lowCache: data.totalCost * get("low_cache") * 0.25,
+  };
+}

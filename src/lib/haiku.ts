@@ -6,6 +6,11 @@ import type {
   ToolStat,
   TurnStat,
 } from "@/types";
+import {
+  avgTokensPerClarification,
+  patternWasteCosts,
+  worstPrompts,
+} from "./analyzer";
 
 export type AiMode = "light" | "detailed";
 
@@ -163,6 +168,10 @@ function buildPromptDetailed(data: DashboardData, locale: Locale): string {
   const totalTokens =
     data.totalInputTokens + data.totalOutputTokens + data.totalCacheReadTokens;
 
+  const avgClarTokens = avgTokensPerClarification(data);
+  const worst = worstPrompts(data, 3);
+  const waste = patternWasteCosts(data);
+
   const clarificationTotalCost = data.totalCost * stats.clarificationRatio;
   const clarificationTotalTokens = Math.round(
     totalTokens * stats.clarificationRatio,
@@ -174,13 +183,49 @@ function buildPromptDetailed(data: DashboardData, locale: Locale): string {
 # 確認往復の累計コスト（このユーザー固有）
 - 確認往復の合計コスト: $${clarificationTotalCost.toFixed(2)}（月間コストの${(stats.clarificationRatio * 100).toFixed(0)}%）
 - 確認往復の合計トークン: 約${clarificationTotalTokens.toLocaleString()}
+- 確認往復1回あたりの平均入力トークン: ${avgClarTokens.toLocaleString()}
 `
         : `
 # Clarification loop cumulative cost (specific to this user)
 - Total clarification cost: $${clarificationTotalCost.toFixed(2)} (${(stats.clarificationRatio * 100).toFixed(0)}% of monthly cost)
 - Total clarification tokens: ~${clarificationTotalTokens.toLocaleString()}
+- Avg input tokens per clarification turn: ${avgClarTokens.toLocaleString()}
 `
       : "";
+
+  const worstBlock =
+    worst.length > 0
+      ? locale === "ja"
+        ? `
+# ワーストプロンプト Top ${worst.length}（単発コスト降順・各200文字まで）
+${worst.map((w, i) => `${i + 1}. [$${w.cost.toFixed(3)}] [${w.tokens.toLocaleString()} input tokens]\n   ${w.text.replace(/\s+/g, " ").trim()}`).join("\n")}
+`
+        : `
+# Worst prompts Top ${worst.length} (by per-turn cost, up to 200 chars each)
+${worst.map((w, i) => `${i + 1}. [$${w.cost.toFixed(3)}] [${w.tokens.toLocaleString()} input tokens]\n   ${w.text.replace(/\s+/g, " ").trim()}`).join("\n")}
+`
+      : "";
+
+  const wasteBlock =
+    locale === "ja"
+      ? `
+# パターン別の無駄コスト内訳（このユーザー固有・USD換算）
+- 確認往復: $${waste.clarification.toFixed(2)}
+- 長すぎるプロンプト: $${waste.longPrompt.toFixed(2)}
+- Opus多用: $${waste.opus.toFixed(2)}
+- 丁寧表現: $${waste.polite.toFixed(2)}
+- 長すぎるセッション: $${waste.longSession.toFixed(2)}
+- キャッシュ未活用: $${waste.lowCache.toFixed(2)}
+`
+      : `
+# Waste cost breakdown by pattern (specific to this user, USD)
+- Clarification loops: $${waste.clarification.toFixed(2)}
+- Long prompts: $${waste.longPrompt.toFixed(2)}
+- Opus overuse: $${waste.opus.toFixed(2)}
+- Polite filler: $${waste.polite.toFixed(2)}
+- Long sessions: $${waste.longSession.toFixed(2)}
+- Low cache hit: $${waste.lowCache.toFixed(2)}
+`;
 
   if (locale === "ja") {
     return `あなたは Claude Code のヘビーユーザー向けコーチです。以下の詳細な使用データをもとに、**実例を引用しながら** 具体的な改善提案をちょうど3件、自然な日本語で作ってください。
@@ -194,7 +239,7 @@ function buildPromptDetailed(data: DashboardData, locale: Locale): string {
 - Opus使用率: ${(stats.opusRatio * 100).toFixed(0)}%
 - 平均セッション時間: ${stats.avgSessionMinutes.toFixed(0)}分
 - 丁寧表現を含むプロンプトの割合: ${(stats.politeRatio * 100).toFixed(0)}%
-${clarificationBlock}
+${clarificationBlock}${wasteBlock}${worstBlock}
 # ツール別コスト内訳（コスト降順）
 ${formatTools(tools)}
 
@@ -232,7 +277,7 @@ ${clarifications.map((c, i) => `${i + 1}. ${c}`).join("\n")}
 - Opus usage ratio: ${(stats.opusRatio * 100).toFixed(0)}%
 - Avg session duration: ${stats.avgSessionMinutes.toFixed(0)} min
 - Polite expression ratio: ${(stats.politeRatio * 100).toFixed(0)}%
-${clarificationBlock}
+${clarificationBlock}${wasteBlock}${worstBlock}
 # Tool cost breakdown (sorted by cost desc)
 ${formatTools(tools)}
 
