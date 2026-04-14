@@ -131,11 +131,18 @@ export function buildChartData(
   const now = new Date();
   now.setHours(0, 0, 0, 0);
 
+  const toKey = (d: Date): string => {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+  };
+
   const buckets = new Map<string, ChartData>();
   for (let i = days - 1; i >= 0; i--) {
     const d = new Date(now);
     d.setDate(d.getDate() - i);
-    const key = d.toISOString().slice(0, 10);
+    const key = toKey(d);
     buckets.set(key, {
       date: key,
       inputTokens: 0,

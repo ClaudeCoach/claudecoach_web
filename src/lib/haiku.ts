@@ -257,8 +257,12 @@ ${clarifications.map((c, i) => `${i + 1}. ${c}`).join("\n")}
 - 「澄清」「廃棄ループ」「清算」など中国語寄りの直訳は使わない
 - **必ず上記の実例を引用または言及して**、なぜそれが無駄だったか、どう書くべきかを説明する
 - description には必ず「あなたの場合は月$XX（約XX万トークン、月間使用量のXX%）節約できます」の形で具体的な金額・トークン数・割合を含めること
-- before は上記の「最もコストが高かったターン」または「短い確認返信の実例」から抜粋すること。「[エラーメッセージをペースト]」のようなプレースホルダーは禁止
-- after は before を実際に改善した具体的な文章にする（テンプレートではなく実際の文章）
+- before は上記の「ワーストプロンプト」「最もコストが高かったターン」「短い確認返信の実例」のいずれかから、実際のテキストをそのまま使うこと（省略・要約せず原文を使う）
+- after は以下のルールに従うこと:
+  1. 「[エラーメッセージをペースト]」「[○○をここに入れる]」などのプレースホルダーは絶対に使わない
+  2. 実際のファイルパスが不明な場合は \`path/to/file.ts\` のような汎用的な表記を使う
+  3. エラーメッセージが不明な場合は具体例を作る（例: \`Cannot find module './auth'\`）
+  4. after は読んだだけで今すぐコピペして使える完成した文章にする
 - estimatedSaving は USD 単位の数値（合計コスト$${data.totalCost.toFixed(2)}と上記の Top 5 ターンから計算した具体値）
 - 他の説明文は一切出力せず、JSON 配列のみを返す
 
@@ -294,8 +298,12 @@ ${clarifications.map((c, i) => `${i + 1}. ${c}`).join("\n")}
 # Rules
 - **You MUST quote or reference the specific examples above**, explain why each was wasteful, and how to rewrite it
 - Every description MUST include a concrete number in the form "In your case you could save $XX/month (about XX tokens, XX% of monthly usage)"
-- "before" MUST be drawn from the Top 5 expensive turns or the short clarification samples above. No placeholders like "[paste error message here]"
-- "after" must be a concrete rewrite of that specific "before" — not a generic template
+- "before" MUST be taken verbatim from the Worst prompts, Top expensive turns, or short clarification samples above — use the actual text, don't paraphrase
+- "after" MUST follow these rules:
+  1. Never use placeholders like "[paste error here]" or "[insert X]"
+  2. If the real file path is unknown, use a generic form like \`path/to/file.ts\`
+  3. If the real error message is unknown, invent a concrete example (e.g. \`Cannot find module './auth'\`)
+  4. "after" must be a complete sentence the user can copy-paste and run as-is
 - estimatedSaving is a USD number computed from the total cost $${data.totalCost.toFixed(2)} and the Top 5 turns
 - Return the JSON array only, no other text
 

@@ -10,6 +10,13 @@ import {
   CACHE_WRITE_PRICE,
 } from "./pricing";
 
+function toLocalDateString(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
 export function extractProjectName(dirName: string): string {
   let name = dirName;
   if (name.startsWith("-")) name = name.slice(1);
@@ -164,7 +171,7 @@ export function parseJsonlContent(
   return {
     sessionId,
     projectName,
-    date: first.toISOString().slice(0, 10),
+    date: toLocalDateString(first),
     timestamp: first.toISOString(),
     totalInputTokens,
     totalOutputTokens,
