@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { FolderOpen, Loader2 } from "lucide-react";
 import { parseDroppedFiles, type DroppedFile } from "@/lib/parser";
+import { buildSampleDroppedFiles } from "@/lib/sampleData";
 import { useAnalysis } from "@/lib/analysis-context";
 import { cn } from "@/lib/utils";
 
@@ -136,6 +137,12 @@ export function DropZone() {
     await handleFiles(files);
   }
 
+  async function onTrySample(e: React.MouseEvent) {
+    e.stopPropagation();
+    if (busy) return;
+    await handleFiles(buildSampleDroppedFiles());
+  }
+
   return (
     <div>
       <p className="mb-3 text-center text-sm text-primary [word-break:keep-all] [overflow-wrap:break-word]">
@@ -182,6 +189,17 @@ export function DropZone() {
       {error && (
         <p className="mt-2 text-sm text-destructive">{error}</p>
       )}
+      <div className="mt-4 flex flex-col items-center gap-2">
+        <p className="text-xs text-muted-foreground">{t("sample_hint")}</p>
+        <button
+          type="button"
+          onClick={onTrySample}
+          disabled={busy}
+          className="rounded-md border border-primary/60 bg-primary/10 px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/20 disabled:opacity-50"
+        >
+          {t("sample_button")}
+        </button>
+      </div>
     </div>
   );
 }

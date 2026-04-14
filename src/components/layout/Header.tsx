@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { LangToggle } from "./LangToggle";
 import { PlanToggle } from "./PlanToggle";
 import { PeriodToggle } from "./PeriodToggle";
+import { useAnalysis } from "@/lib/analysis-context";
 import type { PeriodType, PlanType } from "@/types";
 
 type HeaderProps = {
@@ -26,6 +27,10 @@ export function Header({
   rightSlot,
 }: HeaderProps) {
   const tf = useTranslations("feedback");
+  const tc = useTranslations("claudeMd");
+  const td = useTranslations("dashboard");
+  const { sessions } = useAnalysis();
+  const hasSessions = sessions.length > 0;
   return (
     <header className="sticky top-0 z-20 border-b border-border bg-background/80 backdrop-blur">
       <div className="container mx-auto flex flex-wrap items-center justify-between gap-3 px-4 py-4">
@@ -40,6 +45,22 @@ export function Header({
           <span className="text-xs text-muted-foreground ml-0.5">v1.0</span>
         </Link>
         <div className="flex flex-wrap items-center gap-3">
+          {hasSessions && !showControls && (
+            <Link
+              href="/dashboard"
+              className="text-xs font-semibold lowercase text-primary hover:text-primary/80 transition-colors"
+            >
+              {"// "}
+              {td("nav_link")}
+            </Link>
+          )}
+          <Link
+            href="/claude-md-checker"
+            className="text-xs font-semibold lowercase text-muted-foreground hover:text-primary transition-colors"
+          >
+            {"// "}
+            {tc("nav_link")}
+          </Link>
           <Link
             href="/feedback"
             className="text-xs font-semibold lowercase text-muted-foreground hover:text-primary transition-colors"

@@ -10,11 +10,14 @@ import { ProjectTable } from "@/components/dashboard/ProjectTable";
 import { ToolBreakdown } from "@/components/dashboard/ToolBreakdown";
 import { MessageList } from "@/components/dashboard/MessageList";
 import { ShareButton } from "@/components/dashboard/ShareButton";
+import { DownloadReportButton } from "@/components/dashboard/DownloadReportButton";
+import { DiagnosisCard } from "@/components/dashboard/DiagnosisCard";
 import { Suggestions } from "@/components/dashboard/Suggestions";
 import { BenchmarkCard } from "@/components/dashboard/BenchmarkCard";
 import { useAnalysis } from "@/lib/analysis-context";
 import { useLocale } from "@/lib/i18n-provider";
 import { analyzeDashboard, detectPlan } from "@/lib/analyzer";
+import { buildRuleSuggestions, totalEstimatedSaving } from "@/lib/rules";
 import { storage } from "@/lib/storage";
 import type { PeriodType, PlanType } from "@/types";
 
@@ -84,7 +87,18 @@ export default function DashboardPage() {
         onPlanChange={onPlanChange}
         period={period}
         onPeriodChange={onPeriodChange}
-        rightSlot={<ShareButton data={data} plan={plan} />}
+        rightSlot={
+          <div className="flex items-center gap-2">
+            <DownloadReportButton />
+            <ShareButton data={data} plan={plan} locale={locale} />
+          </div>
+        }
+      />
+      <DiagnosisCard
+        data={data}
+        plan={plan}
+        locale={locale}
+        savings={totalEstimatedSaving(buildRuleSuggestions(data.patterns, data))}
       />
       <main className="container mx-auto px-4 py-6 space-y-6">
         <SummaryCards data={data} />
