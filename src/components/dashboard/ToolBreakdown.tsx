@@ -12,6 +12,31 @@ import {
 } from "@/components/ui/table";
 import type { ToolStat } from "@/types";
 
+function getToolDescription(
+  name: string,
+  t: (key: string) => string,
+): string | null {
+  if (name.startsWith("mcp__")) return t("tool_desc_mcp");
+  const key = name.toLowerCase().replace(/[^a-z]/g, "");
+  const map: Record<string, string> = {
+    bash: "tool_desc_bash",
+    edit: "tool_desc_edit",
+    multiedit: "tool_desc_edit",
+    write: "tool_desc_write",
+    read: "tool_desc_read",
+    grep: "tool_desc_grep",
+    glob: "tool_desc_glob",
+    task: "tool_desc_task",
+    webfetch: "tool_desc_webfetch",
+    websearch: "tool_desc_websearch",
+    todowrite: "tool_desc_todowrite",
+    notebookedit: "tool_desc_notebookedit",
+    exitplanmode: "tool_desc_exitplanmode",
+  };
+  const transKey = map[key];
+  return transKey ? t(transKey) : null;
+}
+
 export function ToolBreakdown({ tools }: { tools: ToolStat[] }) {
   const t = useTranslations("dashboard");
   if (tools.length === 0) return null;
@@ -36,9 +61,18 @@ export function ToolBreakdown({ tools }: { tools: ToolStat[] }) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {tools.slice(0, 12).map((tool) => (
+            {tools.slice(0, 12).map((tool) => {
+              const desc = getToolDescription(tool.name, t);
+              return (
               <TableRow key={tool.name}>
-                <TableCell className="font-medium">{tool.name}</TableCell>
+                <TableCell className="font-medium">
+                  <div>{tool.name}</div>
+                  {desc && (
+                    <div className="text-xs text-muted-foreground font-normal mt-0.5">
+                      {desc}
+                    </div>
+                  )}
+                </TableCell>
                 <TableCell className="text-right tabular-nums">
                   {tool.calls.toLocaleString()}
                 </TableCell>
@@ -54,7 +88,8 @@ export function ToolBreakdown({ tools }: { tools: ToolStat[] }) {
                   </div>
                 </TableCell>
               </TableRow>
-            ))}
+              );
+            })}
           </TableBody>
         </Table>
       </CardContent>
